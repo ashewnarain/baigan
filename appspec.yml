@@ -3,3 +3,5 @@ os: linux
 files:
   - source: ./smartbox-1.0-SNAPSHOT.jar
     destination: /tmp
+  - source: config.yml
+      destination: /tmp
