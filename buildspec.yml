@@ -13,4 +13,5 @@ artifacts:
   files:
     - target/smartbox-1.0-SNAPSHOT.jar
     - appspec.yml
+    - config.yml
   discard-paths: yes
