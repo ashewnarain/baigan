@@ -11,8 +11,5 @@ phases:
       - mvn package
 artifacts:
   files:
-    - target/smartbox-1.0-SNAPSHOT.jar
-    - appspec.yml
-    - config.yml
-    - scripts
+    - /
   discard-paths: yes
