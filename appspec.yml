@@ -4,6 +4,6 @@ files:
   - source: /
     destination: /tmp
 hooks:
-   AfterInstall:
+   ApplicationStart:
     - location: scripts/start-server.sh
       runas: root
