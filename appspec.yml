@@ -4,5 +4,7 @@ files:
   - source: /
     destination: /tmp
 hooks:
-   ApplicationStart:
+  ApplicationStart:
     - location: scripts/start-server.sh
+  ApplicationStop:
+    - location: scripts/stop-server.sh
