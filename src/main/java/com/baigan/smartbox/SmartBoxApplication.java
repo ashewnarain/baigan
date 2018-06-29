@@ -2,7 +2,7 @@ package com.baigan.smartbox;
 
 import com.baigan.smartbox.health.SmartBoxHealthCheck;
 import com.baigan.smartbox.resources.CoreResource;
-import com.baigan.smartbox.services.NotificationService;
+import com.baigan.smartbox.services.CoreService;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -35,7 +35,7 @@ public class SmartBoxApplication extends Application<SmartBoxConfiguration> {
         final JdbiFactory factory = new JdbiFactory();
         final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
 
-        environment.jersey().register(new CoreResource(new NotificationService(configuration.getAppId(), jdbi)));
+        environment.jersey().register(new CoreResource(new CoreService(configuration.getAppId(), jdbi)));
 
 
     }
