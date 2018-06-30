@@ -36,6 +36,10 @@ public class CoreService {
         return passCode.getPassCode();
     }
 
+    public List<PassCodeDO> getPassCodeList() {
+        return dao.selectAllPassCodes();
+    }
+
     public PassCodeDO getPassCode(String productId) {
         return dao.selectPassCode(productId);
     }

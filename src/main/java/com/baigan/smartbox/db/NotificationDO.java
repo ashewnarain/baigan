@@ -24,5 +24,6 @@ public class NotificationDO {
     @ColumnName("insert_id")
     private String insertId;
 
-    public NotificationDO() {}
+    public NotificationDO() {
+    }
 }

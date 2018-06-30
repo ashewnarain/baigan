@@ -72,6 +72,21 @@ public class CoreResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/pass_codes")
+    public Response getPassCodeList() {
+        log.info("[GET PASS CODE LIST] Received request");
+        try {
+            List<PassCodeDO> passCodeDO = service.getPassCodeList();
+            return Response.status(Response.Status.OK).entity(passCodeDO).build();
+        } catch (Exception e) {
+            String error = MessageFormat.format("Error while fetching passCodes", e.getMessage());
+            log.error(error, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/pass_codes/{product_id}")
     public Response getPassCode(@PathParam("product_id") String productId) {
         log.info("[GET PASS CODE] Received request - productId={}", productId);

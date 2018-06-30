@@ -49,10 +49,10 @@ public interface CoreDAO {
 
     @SqlUpdate("INSERT INTO " + SCHEMA_NAME + "." + NOTIFICATION_TABLE_NAME + " (" + NOTIFICATION_INSERT_FIELDS + ") values (" + NOTIFICATION_INSERT_BIND_FIELDS + ")")
     void insertNotification(@Bind(ID) UUID id,
-                @Bind(PRODUCT_ID) String productId,
-                @Bind(EVENT) String event,
-                @Bind(EVENT_TS) Timestamp eventTimestamp,
-                @Bind(INSERT_ID) String insertId);
+                            @Bind(PRODUCT_ID) String productId,
+                            @Bind(EVENT) String event,
+                            @Bind(EVENT_TS) Timestamp eventTimestamp,
+                            @Bind(INSERT_ID) String insertId);
 
 
     @SqlUpdate("INSERT INTO " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " (" + PASSCODE_INSERT_FIELDS + ") values (" + PASSCODE_INSERT_BIND_FIELDS + ")")
@@ -61,6 +61,10 @@ public interface CoreDAO {
                         @Bind(CREATED_TS) Timestamp createdTimestamp,
                         @Bind(INSERT_ID) String insertId);
 
+
+    @SqlQuery("SELECT * FROM " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME)
+    @RegisterBeanMapper(PassCodeDO.class)
+    List<PassCodeDO> selectAllPassCodes();
 
     @SqlQuery("SELECT * FROM " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " WHERE " + PRODUCT_ID + " = :" + PRODUCT_ID)
     @RegisterBeanMapper(PassCodeDO.class)
