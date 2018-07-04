@@ -1,5 +1,6 @@
 package com.baigan.smartbox.db;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.jdbi.v3.core.mapper.reflect.ColumnName;

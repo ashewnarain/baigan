@@ -15,8 +15,8 @@ public class PassCode {
     @JsonProperty("pass_code")
     private String passCode;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS", timezone = "UTC")
     @JsonProperty("created_ts")
-    private LocalDateTime createdTimestamp;
+    private LocalDateTime createdTs;
 
 }
