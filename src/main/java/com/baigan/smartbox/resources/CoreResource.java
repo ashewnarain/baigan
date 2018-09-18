@@ -51,7 +51,44 @@ public class CoreResource {
             log.error(error, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
+    }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/notifications/{notification_id}")
+    public Response getNotification(@PathParam("notification_id") String notificationId, @HeaderParam("request_id") String requestId) {
+        if (StringUtils.isBlank(requestId)) {
+            requestId = UUID.randomUUID().toString();
+            log.warn("[GET NOTIFICATION] No 'request_id' provided, auto-generated new [request_id={}]", requestId);
+        }
+        log.info("[GET NOTIFICATION] Received request - request_id={} notification_id={}", requestId, notificationId);
+        try {
+            Notification notification = service.getNotification(requestId, notificationId);
+            return Response.status(Response.Status.OK).entity(notification).build();
+        } catch (Exception e) {
+            String error = MessageFormat.format("Error while fetching notification - request_id={0} notificationId={1} error={2}", requestId, notificationId, e.getMessage());
+            log.error(error, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/notifications")
+    public Response getNotificationList(@HeaderParam("request_id") String requestId) {
+        if (StringUtils.isBlank(requestId)) {
+            requestId = UUID.randomUUID().toString();
+            log.warn("[GET NOTIFICATION] No 'request_id' provided, auto-generated new [request_id={}]", requestId);
+        }
+        log.info("[GET NOTIFICATION] Received request - request_id={} notification_id={}", requestId);
+        try {
+            List<Notification> notificationList = service.getNotificationList(requestId);
+            return Response.status(Response.Status.OK).entity(notificationList).build();
+        } catch (Exception e) {
+            String error = MessageFormat.format("Error while fetching notifications - request_id={0} error={1}", requestId, e.getMessage());
+            log.error(error, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
+        }
     }
 
     @POST
@@ -70,6 +107,24 @@ public class CoreResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }
     }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/pass_codes")
+    public Response updatePassCode(PassCode passCode) {
+        log.info("[UPDATE PASS CODE] Received request - productId={} passCode={} timestamp={}", passCode.getProductId(), passCode.getPassCode(), passCode.getCreatedTs());
+        try {
+            String id = service.savePassCode(passCode);
+            String message = MessageFormat.format("Successfully saved passCode - productId={0} passCode={1}", passCode.getProductId(), id);
+            return Response.status(Response.Status.CREATED).entity(message).build();
+
+        } catch (Exception e) {
+            String error = MessageFormat.format("Error while saving passCode - productId={0} error={1}", passCode.getProductId(), e.getMessage());
+            log.error(error, e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
+        }
+    }
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

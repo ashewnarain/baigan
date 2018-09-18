@@ -1,6 +1,7 @@
 package com.baigan.smartbox.services;
 
 import com.baigan.smartbox.db.CoreDAO;
+import com.baigan.smartbox.db.NotificationDO;
 import com.baigan.smartbox.db.PassCodeDO;
 import com.baigan.smartbox.domain.Notification;
 import com.baigan.smartbox.domain.PassCode;
@@ -31,6 +32,41 @@ public class CoreService {
                 appId);
         return notification.getNotificationId();
     }
+
+    public Notification getNotification(String requestId, String notificationId) throws Exception {
+        NotificationDO notificationDO = dao.getNotification(UUID.fromString(notificationId));
+        if (null == notificationDO) {
+            String message = MessageFormat.format("No record found in the database! - requestId={0} notificationId={1}", requestId, notificationId);
+            log.warn(message);
+            throw new Exception(message);
+        }
+        Notification notification = new Notification();
+        notification.setNotificationId(notificationDO.getId());
+        notification.setEvent(notificationDO.getEvent());
+        notification.setProductId(notification.getProductId());
+        notification.setEventTimestamp(notificationDO.getEventTs().toLocalDateTime());
+        return notification;
+    }
+
+    public List<Notification> getNotificationList(String requestId) throws Exception {
+        List<NotificationDO> notificationDOList = dao.getAllNotifications();
+        if (null == notificationDOList) {
+            String message = MessageFormat.format("No record found in the database! - requestId={0}", requestId);
+            log.warn(message);
+            throw new Exception(message);
+        }
+        List<Notification> notificationList = new ArrayList<>();
+        for (NotificationDO notificationDO : notificationDOList) {
+            Notification notification = new Notification();
+            notification.setNotificationId(notificationDO.getId());
+            notification.setEvent(notificationDO.getEvent());
+            notification.setProductId(notificationDO.getProductId());
+            notification.setEventTimestamp(notificationDO.getEventTs().toLocalDateTime());
+            notificationList.add(notification);
+        }
+        return notificationList;
+    }
+
 
     public String savePassCode(PassCode passCode) {
         dao.insertPassCode(passCode.getProductId(),

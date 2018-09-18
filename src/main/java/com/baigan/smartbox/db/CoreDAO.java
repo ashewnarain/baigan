@@ -23,6 +23,7 @@ public interface CoreDAO {
     String INSERT_ID = "insert_id";
     String PASS_CODE = "pass_code";
     String CREATED_TS = "created_ts";
+    String UPDATED_TS = "updated_ts";
     String INSERT_TS = "insert_ts";
 
     String NOTIFICATION_INSERT_FIELDS = ID
@@ -55,10 +56,25 @@ public interface CoreDAO {
                             @Bind(INSERT_ID) String insertId);
 
 
-    @SqlUpdate("INSERT INTO " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " (" + PASSCODE_INSERT_FIELDS + ") values (" + PASSCODE_INSERT_BIND_FIELDS + ")")
+    @SqlQuery("SELECT * FROM " + SCHEMA_NAME + "." + NOTIFICATION_TABLE_NAME + " WHERE " + ID + " = :" + ID)
+    @RegisterBeanMapper(NotificationDO.class)
+    NotificationDO getNotification(@Bind(ID) UUID id);
+
+    @SqlQuery("SELECT * FROM " + SCHEMA_NAME + "." + NOTIFICATION_TABLE_NAME + " ORDER BY " + EVENT_TS + " DESC LIMIT 50")
+    @RegisterBeanMapper(NotificationDO.class)
+    List<NotificationDO> getAllNotifications();
+
+
+    @SqlUpdate("UPDATE " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " SET" + PASSCODE_INSERT_FIELDS + ") values (" + PASSCODE_INSERT_BIND_FIELDS + ")")
     void insertPassCode(@Bind(PRODUCT_ID) String productId,
                         @Bind(PASS_CODE) String passCode,
                         @Bind(CREATED_TS) Timestamp createdTimestamp,
+                        @Bind(INSERT_ID) String insertId);
+
+    @SqlUpdate("UPDATE " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " SET " + PASS_CODE + " = :" + PASS_CODE + "AND " + UPDATED_TS + "= :"+ UPDATED_TS + " WHERE " + PRODUCT_ID + " = :" + PRODUCT_ID)
+    void updatePassCode(@Bind(PRODUCT_ID) String productId,
+                        @Bind(PASS_CODE) String passCode,
+                        @Bind(UPDATED_TS) Timestamp updatedTimestamp,
                         @Bind(INSERT_ID) String insertId);
 
 
