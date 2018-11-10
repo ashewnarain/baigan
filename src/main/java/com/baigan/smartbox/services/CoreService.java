@@ -76,6 +76,14 @@ public class CoreService {
         return passCode.getPassCode();
     }
 
+    public String updatePassCode(PassCode passCode) {
+        dao.updatePassCode(passCode.getProductId(),
+                passCode.getPassCode(),
+                Timestamp.valueOf(passCode.getCreatedTs()),
+                appId);
+        return passCode.getPassCode();
+    }
+
     public List<PassCode> getPassCodeList(String requestId) throws Exception {
         List<PassCodeDO> passCodeDOList = dao.selectAllPassCodes();
         if (null == passCodeDOList) {
@@ -107,4 +115,5 @@ public class CoreService {
         passCode.setCreatedTs(passCodeDO.getCreatedTs().toLocalDateTime());
         return passCode;
     }
+
 }

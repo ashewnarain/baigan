@@ -23,19 +23,6 @@ public class CoreResource {
         this.service = service;
     }
 
-    @GET
-    @Path("/hello")
-    public Response getGreeting() {
-        return Response.ok("Hello World!").build();
-    }
-
-    @POST
-    @Path("/events")
-    public Response createEvent(Event event) {
-        log.info("[EVENT] Received event - event={} timestamp={}", event.getEvent(), event.getTimestamp());
-        return Response.status(Response.Status.CREATED).entity("Success").build();
-    }
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/notifications")
@@ -114,12 +101,12 @@ public class CoreResource {
     public Response updatePassCode(PassCode passCode) {
         log.info("[UPDATE PASS CODE] Received request - productId={} passCode={} timestamp={}", passCode.getProductId(), passCode.getPassCode(), passCode.getCreatedTs());
         try {
-            String id = service.savePassCode(passCode);
-            String message = MessageFormat.format("Successfully saved passCode - productId={0} passCode={1}", passCode.getProductId(), id);
+            String id = service.updatePassCode(passCode);
+            String message = MessageFormat.format("Successfully updated passCode - productId={0} passCode={1}", passCode.getProductId(), id);
             return Response.status(Response.Status.CREATED).entity(message).build();
 
         } catch (Exception e) {
-            String error = MessageFormat.format("Error while saving passCode - productId={0} error={1}", passCode.getProductId(), e.getMessage());
+            String error = MessageFormat.format("Error while updating passCode - productId={0} error={1}", passCode.getProductId(), e.getMessage());
             log.error(error, e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
         }

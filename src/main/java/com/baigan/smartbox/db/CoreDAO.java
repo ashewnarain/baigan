@@ -65,13 +65,13 @@ public interface CoreDAO {
     List<NotificationDO> getAllNotifications();
 
 
-    @SqlUpdate("UPDATE " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " SET" + PASSCODE_INSERT_FIELDS + ") values (" + PASSCODE_INSERT_BIND_FIELDS + ")")
+    @SqlUpdate("INSERT INTO " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " (" + PASSCODE_INSERT_FIELDS + ") values (" + PASSCODE_INSERT_BIND_FIELDS + ")")
     void insertPassCode(@Bind(PRODUCT_ID) String productId,
                         @Bind(PASS_CODE) String passCode,
                         @Bind(CREATED_TS) Timestamp createdTimestamp,
                         @Bind(INSERT_ID) String insertId);
 
-    @SqlUpdate("UPDATE " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " SET " + PASS_CODE + " = :" + PASS_CODE + "AND " + UPDATED_TS + "= :"+ UPDATED_TS + " WHERE " + PRODUCT_ID + " = :" + PRODUCT_ID)
+    @SqlUpdate("UPDATE " + SCHEMA_NAME + "." + PASS_CODE_TABLE_NAME + " SET " + PASS_CODE + "=:" + PASS_CODE + ", " + UPDATED_TS + "=:"+ UPDATED_TS + " WHERE " + PRODUCT_ID + "=:" + PRODUCT_ID)
     void updatePassCode(@Bind(PRODUCT_ID) String productId,
                         @Bind(PASS_CODE) String passCode,
                         @Bind(UPDATED_TS) Timestamp updatedTimestamp,
